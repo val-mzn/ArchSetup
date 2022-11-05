@@ -15,7 +15,8 @@ mount /dev/sda3 /mnt
 pacstrap /mnt base base-devel openssh linux linux-firmware neovim
 genfstab -U /mnt >> /mnt/etc/fstab
 
-arch-chroot /mnt
+
+arch-chroot /mnt /bin/bash -e <<EOF
 
 sed -e '/en_US.UTF-8/s/^#*//g' -i /etc/locale.gen
 locale-gen
@@ -75,8 +76,7 @@ echo theme-name = Arc-Dark >> /etc/lightdm/lightdm-gtk-greeter.conf
 echo icon-theme-name = Papirus-Dark >> /etc/lightdm/lightdm-gtk-greeter.conf
 echo 'background = #2f343f' >> /etc/lightdm/lightdm-gtk-greeter.conf
 
-exit
-exit
+EOF
 umount -R /mnt
 swapoff /dev/sda2
 reboot
