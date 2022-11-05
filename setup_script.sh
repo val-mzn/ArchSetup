@@ -1,10 +1,10 @@
 reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
 
 parted --script /dev/sda -- mklabel gpt \
-  mkpart ESP fat32 0Mib 512Mib \
+  mkpart ESP fat32 1Mib 513Mib \
   set 1 boot on \
-  mkpart primary linux-swap 512Mib 4608Mib \
-  mkpart primary ext4 4608Mib 100%
+  mkpart primary linux-swap 513Mib 4609Mib \
+  mkpart primary ext4 4609Mib 100%
 
 mkfs.vfat -F32 /dev/sda1
 mkswap /dev/sda2
