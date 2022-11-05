@@ -14,5 +14,3 @@ mkfs.ext4 /dev/sda3
 mount /dev/sda3 /mnt
 pacstrap /mnt base base-devel openssh linux linux-firmware neovim
 genfstab -U /mnt >> /mnt/etc/fstab
-
-arch-chroot /mnt
