@@ -1,4 +1,4 @@
-pacmam -Sy
+pacman -Sy
 pacman -S dialog
 
 hostname=$(dialog --stdout --inputbox "Enter hostname" 0 0) || exit 1
@@ -60,9 +60,9 @@ arch-chroot /mnt /bin/bash -e <<EOF
 	echo ::1          localhost.localdomain   localhost >> /etc/hosts
 	echo 127.0.0.1    thinkpad.localdomain    ${hostname} >> /etc/hosts
 
-	echo ${password} | passwd
+	echo "root:${password}" | chpasswd
 	useradd -m -g users -G wheel,storage,power,audio val_mzn
-	echo ${password} | passwd val_mzn
+	echo "${username}:${password} | chpasswd
 	sed -i '/NOPASSWD/!s/# %wheel/%wheel/g' /etc/sudoers
 	read -p "END ECHO"
 
