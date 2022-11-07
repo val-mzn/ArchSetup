@@ -37,6 +37,7 @@ wipefs "${part_root}"
 mkfs.vfat -F32 "${part_boot}"
 mkswap "${part_swap}"
 mkfs.ext4 -f "${part_root}"
+read -p "WAIT"
 
 swapon "${part_swap}"
 mount "${part_root}" /mnt
@@ -45,6 +46,7 @@ mount "${part_boot}" /mnt/boot
 
 pacstrap /mnt base linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
+read -p "WAIT"
 clear
 
 {
