@@ -1,5 +1,5 @@
 pacman -Sy
-pacman -S dialog
+yes | pacman -S dialog
 
 hostname=$(dialog --stdout --inputbox "Enter hostname" 0 0) || exit 1
 clear : ${hostname:?"hostname cannot be empty"}
@@ -65,15 +65,29 @@ arch-chroot /mnt /bin/bash -e <<EOF
 	echo "$user:$password" | chpasswd
 	sed -i '/NOPASSWD/!s/# %wheel/%wheel/g' /etc/sudoers
 
-	pacman -S dhcpcd networkmanager network-manager-applet
+	yes | pacman -S dhcpcd networkmanager network-manager-applet
 	systemctl enable sshd dhcpcd NetworkManager fstrim.timer
+	
+	su - "$user"
+	mkdir Sources
+	cd Sources
+	git clone https://aur.archlinux.org/yay.git
+	cd yay
+	makepkg -si
+	exit
 
-	pacman -S grub-efi-x86_64 efibootmgr
+	yes | pacman -S xorg-server xorg-apps xorg-xinit \
+	i3-gaps i3blocks i3lock numlockx \
+	firefox rofi \
+	lightdm lightdm-gtk-greeter --needed
+
+	systemctl enable lightdm
+	
+	yes | pacman -S grub-efi-x86_64 efibootmgr
 	grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch
 	grub-mkconfig -o /boot/grub/grub.cfg
 EOF
 
-read -p "WAIT"
 umount -R /mnt
 swapoff /dev/sda2
 shutdown
