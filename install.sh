@@ -46,7 +46,7 @@ mount "${part_boot}" /mnt/boot
 pacstrap /mnt base linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 
-{
+arch-chroot /mnt /bin/bash -e <<EOF
 	ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
 	hwclock --systohc
 	
@@ -73,8 +73,8 @@ genfstab -U /mnt >> /mnt/etc/fstab
 	grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch
 	grub-mkconfig -o /boot/grub/grub.cfg
 	read -p "END GRUB"
+EOF
 
-} | arch-chroot /mnt 
 read -p "WAIT"
 umount -R /mnt
 swapoff /dev/sda2
