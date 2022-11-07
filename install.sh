@@ -64,7 +64,6 @@ arch-chroot /mnt /bin/bash -e <<EOF
 	useradd -m -g users -G wheel,storage,power,audio "$user"
 	echo "$user:$password" | chpasswd
 	sed -i '/NOPASSWD/!s/# %wheel/%wheel/g' /etc/sudoers
-	read -p "END ECHO"
 
 	pacman -S dhcpcd networkmanager network-manager-applet
 	systemctl enable sshd dhcpcd NetworkManager fstrim.timer
@@ -72,7 +71,6 @@ arch-chroot /mnt /bin/bash -e <<EOF
 	pacman -S grub-efi-x86_64 efibootmgr
 	grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch
 	grub-mkconfig -o /boot/grub/grub.cfg
-	read -p "END GRUB"
 EOF
 
 read -p "WAIT"
