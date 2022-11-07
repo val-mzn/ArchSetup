@@ -43,7 +43,7 @@ mount "${part_root}" /mnt
 mkdir /mnt/boot
 mount "${part_boot}" /mnt/boot
 
-pacstrap /mnt base-devel base linux linux-firmware
+pacstrap /mnt base-devel base linux linux-firmware sudo
 genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt /bin/bash -e <<EOF
